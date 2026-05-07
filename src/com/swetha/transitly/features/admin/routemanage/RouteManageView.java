@@ -24,25 +24,45 @@ public class RouteManageView {
             System.out.println("\nRoute management");
             System.out.println("1. Add route");
             System.out.println("2. View routes");
-            System.out.println("3. Back");
+            System.out.println("3. Remove route");
+            System.out.println("4. Back");
 
             int choice = getChoice("Select an option : ");
             switch(choice) {
-                case 1:
+                case 1 :
                     addRoute();
                     break;
 
-                case 2:
+                case 2 :
                     showRouteList();
                     break;
 
-                case 3:
+                case 3 :
+                    removeRoute();
+                    break;
+
+                case 4 :
                     return;
 
                 default:
                     System.out.println("Invalid choice.");
             }
         }
+    }
+
+    private void removeRoute() {
+        int routeId;
+
+        while(true) {
+            routeId = getChoice("Enter route id to remove (0 to go back) : ");
+
+            if(routeId == 0) return;
+            if(routeId < 0) showMessage("Route id must be greater than 0.");
+            else if(!routeManageModel.doesRouteExist(routeId)) showMessage("Route id does not exist.");
+            else break;
+        }
+
+        routeManageModel.removeRoute(routeId);
     }
 
     public void showRouteList() {

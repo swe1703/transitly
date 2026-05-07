@@ -15,15 +15,23 @@ public class BusSearchView {
     }
 
     public void init() {
-        getBusesByStopName();
+        getBusesBySourceAndDestination();
     }
 
-    public void getBusesByStopName() {
-        String stopName;
+    public void getBusesBySourceAndDestination() {
+        String source;
         while(true) {
-            System.out.print("Enter stop name : ");
-            stopName = scanner.nextLine().trim();
-            if(stopName.isEmpty()) showMessage("Stop name cannot be empty.");
+            System.out.print("Starting from : ");
+            source = scanner.nextLine().trim();
+            if(source.isEmpty()) showMessage("Source  cannot be empty.");
+            else break;
+        }
+
+        String destination;
+        while(true) {
+            System.out.print("Heading to : ");
+            destination = scanner.nextLine().trim();
+            if(destination.isEmpty()) showMessage("Destination cannot be empty.");
             else break;
         }
 
@@ -36,7 +44,7 @@ public class BusSearchView {
             showMessage("Invalid shift. Please enter 'am' or 'pm'.");
         }
 
-        ArrayList<String[]> availableBuses = busSearchModel.getBusesByStopName(stopName, shift);
+        ArrayList<String[]> availableBuses = busSearchModel.getBusesBySourceAndDestination(source, destination, shift);
         if(availableBuses == null || availableBuses.isEmpty()) {
             showMessage("No buses available for your stop.");
         }

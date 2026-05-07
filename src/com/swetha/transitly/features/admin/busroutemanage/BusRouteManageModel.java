@@ -41,4 +41,9 @@ public class BusRouteManageModel {
     public ArrayList<BusRoute> getAllBusRoutes() {
         return TransitlyDB.getInstance().getAllBusRoutes();
     }
+
+    public void removeBusRoute(int busRouteId) {
+        boolean isRemoved = TransitlyDB.getInstance().removeBusRoute(busRouteId);
+        if(isRemoved) busRouteManageView.showMessage("Bus-route has been removed.");
+    }
 }

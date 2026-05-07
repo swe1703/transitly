@@ -30,4 +30,8 @@ public class StopTimingManageModel {
     public ArrayList<StopTiming> getStopTimingsByBusRouteId(int busRouteId) {
         return TransitlyDB.getInstance().getTimingsByBusRouteId(busRouteId);
     }
+
+    public boolean updateStopTiming(int busRouteId, String stopName, String newTime) {
+        return TransitlyDB.getInstance().updateStopTiming(busRouteId, stopName, newTime);
+    }
 }

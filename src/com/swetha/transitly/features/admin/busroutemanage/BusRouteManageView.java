@@ -26,7 +26,8 @@ public class BusRouteManageView {
             System.out.println("\nBus Route Mapping");
             System.out.println("1. Map bus to route");
             System.out.println("2. View mappings");
-            System.out.println("3. Back");
+            System.out.println("3. Remove mapping (bus-route)");
+            System.out.println("4. Back");
             
             int choice = getChoice("Select an option : ");
 
@@ -40,12 +41,28 @@ public class BusRouteManageView {
                     break;
 
                 case 3 :
+                    removeBusRoute();
+                    break;
+
+                case 4 :
                     return;
 
                 default :
                     showMessage("Invalid choice.");
             }
         }
+    }
+
+    private void removeBusRoute() {
+        int busRouteId;
+        while(true) {
+            busRouteId = getChoice("Enter bus-route id to remove (0 to go back) : ");
+            if(busRouteId == 0) return;
+            if(!busRouteManageModel.doesBusRouteIdExist(busRouteId)) showMessage("Bus-route id does not exist.");
+            else break;
+        }
+
+        busRouteManageModel.removeBusRoute(busRouteId);
     }
 
     private void mapBusToRoute() {

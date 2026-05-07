@@ -3,6 +3,7 @@ package com.swetha.transitly.data.repository;
 import com.swetha.transitly.data.dto.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class TransitlyDB {
     private TransitlyDB() {
@@ -116,5 +117,53 @@ public class TransitlyDB {
         }
 
         return result;
+    }
+
+    public boolean removeBus(int busId) {
+        for(Bus bus : buses) {
+            if(bus.getBusId() == busId) {
+                buses.remove(bus);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean removeRoute(int routeId) {
+        for(Route route : routes) {
+            if(route.getRouteId() == routeId) {
+                routes.remove(route);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean removeBusRoute(int busRouteId) {
+        for(BusRoute busRoute : busAndRoutes) {
+            if(busRoute.getBusRouteId() == busRouteId) {
+                busAndRoutes.remove(busRoute);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean updateStopTiming(int busRouteId, String stopName, String newTime) {
+        for(StopTiming stopTiming : stopTimings) {
+            if(stopTiming.getBusRouteId() == busRouteId) {
+                LinkedHashMap<String, String> timings = stopTiming.getStopTimings();
+
+                if(timings.containsKey(stopName)) {
+                    timings.put(stopName, newTime);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

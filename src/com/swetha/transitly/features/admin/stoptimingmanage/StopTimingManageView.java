@@ -28,7 +28,8 @@ public class StopTimingManageView {
             System.out.println("\nStop Timing Management");
             System.out.println("1. Add stop timing");
             System.out.println("2. View stop timings");
-            System.out.println("3. Back");
+            System.out.println("3. Update stop timing");
+            System.out.println("4. Back");
 
             int choice = getChoice("Select an option : ");
             switch(choice) {
@@ -41,12 +42,59 @@ public class StopTimingManageView {
                     break;
 
                 case 3:
+                    updateStopTiming();
+                    break;
+
+                case 4:
                     return;
 
                 default:
                     System.out.println("Invalid choice.");
             }
         }
+    }
+
+    private void updateStopTiming() {
+        int busRouteId = getChoice("Enter bus-route id : ");
+
+        ArrayList<StopTiming> timings = stopTimingManageModel.getStopTimingsByBusRouteId(busRouteId);
+        if(timings == null || timings.isEmpty()) {
+            showMessage("No timings found.");
+            return;
+        }
+
+        StopTiming timing = timings.get(0);
+
+        System.out.println();
+
+        for(Map.Entry<String, String> entry : timing.getStopTimings().entrySet()) {
+            String stopName = entry.getKey();
+            String arrivalTime = entry.getValue();
+            System.out.println(stopName + " -> " + arrivalTime);
+        }
+
+        String stopName;
+        while(true) {
+            System.out.print("Enter stop name to update : ");
+            stopName = scanner.nextLine().trim();
+            if(timing.getStopTimings().containsKey(stopName)) break;
+            showMessage("Stop not found.");
+        }
+
+        String newTime;
+        while(true) {
+            System.out.print("Enter new time (HH:MM) : ");
+            newTime = scanner.nextLine().trim();
+            try {
+                LocalTime.parse(newTime, TIME_FORMATTER);
+                break;
+            } catch(DateTimeParseException e) {
+                showMessage("Invalid time format.");
+            }
+        }
+
+        boolean isUpdated = stopTimingManageModel.updateStopTiming(busRouteId, stopName, newTime);
+        if(isUpdated) showMessage("Timing has been updated.");
     }
 
     public void addStopTiming() {
@@ -98,15 +146,15 @@ public class StopTimingManageView {
             return;
         }
 
-        int tripNo = 1;
         for(StopTiming timing : timings) {
-            System.out.println("\nTrip " + tripNo++);
             System.out.println("--------------------------------------------------");
             System.out.printf("%-20s %-15s%n", "Stop name", "Arrival time");
             System.out.println("--------------------------------------------------");
 
             for(Map.Entry<String,String> entry : timing.getStopTimings().entrySet()) {
-                System.out.printf("%-20s %-15s%n", entry.getKey(), entry.getValue());
+                String stopName = entry.getKey();
+                String arrivalTime = entry.getValue();
+                System.out.printf("%-20s %-15s%n", stopName, arrivalTime);
             }
 
             System.out.println("--------------------------------------------------");

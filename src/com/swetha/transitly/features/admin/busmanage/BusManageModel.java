@@ -16,7 +16,7 @@ public class BusManageModel {
         Bus bus = new Bus(busId, busNumber, busName);
         TransitlyDB.getInstance().addBus(bus);
 
-        busManageView.onBusAdded("Bus added successfully.");
+        busManageView.onBusAdded("Bus has been added.");
     }
 
     public void getAllBuses() {
@@ -38,5 +38,12 @@ public class BusManageModel {
         }
 
         return false;
+    }
+
+    public void removeBus(int busId) {
+        boolean isDeleted = TransitlyDB.getInstance().removeBus(busId);
+
+        if(isDeleted) busManageView.showMessage("Bus has been removed.");
+        else busManageView.showMessage("Unable to remove bus.");
     }
 }

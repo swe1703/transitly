@@ -24,7 +24,8 @@ public class BusManageView {
             System.out.println("\nBus Management");
             System.out.println("1. Add bus");
             System.out.println("2. View buses");
-            System.out.println("3. Back");
+            System.out.println("3. Remove bus");
+            System.out.println("4. Back");
 
             int choice = getChoice("Select an option : ");
             switch(choice) {
@@ -37,12 +38,30 @@ public class BusManageView {
                     break;
 
                 case 3 :
+                    removeBus();
+                    break;
+
+                case 4 :
                     return;
 
                 default :
                     System.out.println("Invalid choice.");
             }
         }
+    }
+
+    private void removeBus() {
+        int busId;
+        while(true) {
+            busId = getChoice("Enter bus id to remove (0 to go back) : ");
+
+            if(busId == 0) return;
+            if(busId < 0) showMessage("Bus id must be greater than 0.");
+            else if(!busManageModel.doesBusIdExist(busId)) showMessage("Bus id does not exist.");
+            else break;
+        }
+
+        busManageModel.removeBus(busId);
     }
 
     public void addBus() {

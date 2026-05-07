@@ -15,30 +15,53 @@ public class BusSearchModel {
         this.busSearchView = busSearchView;
     }
 
-    public ArrayList<String[]> getBusesByStopName(String stopName, String shift) {
+    public ArrayList<String[]> getBusesBySourceAndDestination(String source, String destination, String shift) {
         ArrayList<String[]> availableBuses = new ArrayList<>();
-
         ArrayList<BusRoute> busRoutes = TransitlyDB.getInstance().getAllBusRoutes();
+
         for(BusRoute busRoute : busRoutes) {
             if(!busRoute.getShift().equalsIgnoreCase(shift)) continue;
 
             ArrayList<StopTiming> stopTimings = TransitlyDB.getInstance().getTimingsByBusRouteId(busRoute.getBusRouteId());
+
             for(StopTiming stopTiming : stopTimings) {
-                for(Map.Entry<String, String> stopNameWithTiming : stopTiming.getStopTimings().entrySet()) {
+                ArrayList<String> stopNames = new ArrayList<>(stopTiming.getStopTimings().keySet());
 
-                    String existingStopName = stopNameWithTiming.getKey();
+                int sourceIndex = -1;
+                int destinationIndex = -1;
 
-                    if(existingStopName.equalsIgnoreCase(stopName)) {
-                        Bus bus = TransitlyDB.getInstance().getBusById(busRoute.getBusId());
-                        if(bus != null) {
-                            String arrivalTime = stopNameWithTiming.getValue();
-                            availableBuses.add(new String[] {bus.getBusNumber(), bus.getBusName(), arrivalTime});
-                        }
+                for(int stopIndex = 0; stopIndex < stopNames.size(); stopIndex++) {
+                    String currentStop = stopNames.get(stopIndex);
+                    if(currentStop.equalsIgnoreCase(source)) sourceIndex = stopIndex;
+                    if(currentStop.equalsIgnoreCase(destination)) destinationIndex = stopIndex;
+                }
 
-                        break;
+                if(sourceIndex != -1 && destinationIndex != -1 && destinationIndex > sourceIndex) {
+                    Bus bus = TransitlyDB.getInstance().getBusById(busRoute.getBusId());
+
+                    if(bus != null) {
+                        String arrivalTime = stopTiming.getStopTimings().get(stopNames.get(sourceIndex));
+                        availableBuses.add(new String[] {bus.getBusNumber(), bus.getBusName(), arrivalTime});
                     }
                 }
             }
+
+//            for(StopTiming stopTiming : stopTimings) {
+//                for(Map.Entry<String, String> stopNameWithTiming : stopTiming.getStopTimings().entrySet()) {
+//
+//                    String existingStopName = stopNameWithTiming.getKey();
+//
+//                    if(existingStopName.equalsIgnoreCase(stopName)) {
+//                        Bus bus = TransitlyDB.getInstance().getBusById(busRoute.getBusId());
+//                        if(bus != null) {
+//                            String arrivalTime = stopNameWithTiming.getValue();
+//                            availableBuses.add(new String[] {bus.getBusNumber(), bus.getBusName(), arrivalTime});
+//                        }
+//
+//                        break;
+//                    }
+//                }
+//            }
         }
 
         return availableBuses;

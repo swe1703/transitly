@@ -25,7 +25,7 @@ public class RouteManageModel {
         route.setStops(stops);
 
         TransitlyDB.getInstance().addRoute(route);
-        routeManageView.onRouteAdded("Route added successfully.");
+        routeManageView.onRouteAdded("Route has been added.");
     }
 
     public void getAllRoutes() {
@@ -37,5 +37,11 @@ public class RouteManageModel {
         }
 
         routeManageView.showRouteTable(routes);
+    }
+
+    public void removeRoute(int routeId) {
+        boolean isRemoved = TransitlyDB.getInstance().removeRoute(routeId);
+        if(isRemoved) routeManageView.showMessage("Route has been removed.");
+        else routeManageView.showMessage("Unable to remove route.");
     }
 }
