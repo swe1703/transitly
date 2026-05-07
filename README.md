@@ -2,6 +2,7 @@
 A console application that allows users to view bus schedules and check arrival times at their stop.
 
 Features :
+
 Authentication :
 - User signup with name, email, password, and confirm password
 - Email format validation and duplicate email check
