@@ -1,14 +1,13 @@
 package com.swetha.transitly.features.admin.busmanage;
 
 import com.swetha.transitly.data.dto.Bus;
-import com.swetha.transitly.features.admin.routemanage.RouteManageModel;
 import com.swetha.transitly.util.ConsoleInput;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BusManageView {
-    private BusManageModel busManageModel;
+    private final BusManageModel busManageModel;
     private final Scanner scanner;
 
     public BusManageView() {
@@ -22,14 +21,12 @@ public class BusManageView {
 
     public void showBusMenu() {
         while(true) {
-            System.out.println("\nBus management");
+            System.out.println("\nBus Management");
             System.out.println("1. Add bus");
             System.out.println("2. View buses");
             System.out.println("3. Back");
 
-            System.out.print("Enter your choice : ");
-            int choice = Integer.parseInt(scanner.nextLine());
-
+            int choice = getChoice("Select an option : ");
             switch(choice) {
                 case 1 :
                     addBus();
@@ -51,18 +48,27 @@ public class BusManageView {
     public void addBus() {
         int busId;
         while(true) {
-            System.out.print("Enter bus id : ");
-            busId = Integer.parseInt(scanner.nextLine());
-
-            if(busManageModel.doesBusIdExist(busId)) showMessage("Bus id already exists.");
+            busId = getChoice("Enter bus id : ");
+            if(busId <= 0) showMessage("Bus id must be greater than 0.");
+            else if(busManageModel.doesBusIdExist(busId)) showMessage("Bus id already exists.");
             else break;
         }
 
-        System.out.print("Enter bus number : ");
-        String busNumber = scanner.nextLine();
+        String busNumber;
+        while(true) {
+            System.out.print("Enter bus number : ");
+            busNumber = scanner.nextLine().trim();
+            if(busNumber.isEmpty()) showMessage("Bus number cannot be empty.");
+            else break;
+        }
 
-        System.out.print("Enter bus name : ");
-        String busName = scanner.nextLine();
+        String busName;
+        while(true) {
+            System.out.print("Enter bus name : ");
+            busName = scanner.nextLine().trim();
+            if(busName.isEmpty()) showMessage("Bus name cannot be empty.");
+            else break;
+        }
 
         busManageModel.addBus(busId, busNumber, busName);
     }
@@ -72,7 +78,7 @@ public class BusManageView {
     }
 
     public void onBusAdded(String message) {
-        showMessage("Bus added successfully.");
+        showMessage(message);
     }
 
     public void showMessage(String message) {
@@ -80,6 +86,11 @@ public class BusManageView {
     }
 
     public void showBusTable(ArrayList<Bus> buses) {
+        if(buses == null || buses.isEmpty()) {
+            showMessage("No buses available.");
+            return;
+        }
+
         System.out.println("--------------------------------------------------------------------------------");
         System.out.printf("%-10s %-15s %-15s%n", "Bus id", "Bus number", "Bus name");
         System.out.println("--------------------------------------------------------------------------------");
@@ -89,5 +100,16 @@ public class BusManageView {
         }
 
         System.out.println("--------------------------------------------------------------------------------");
+    }
+
+    private int getChoice(String prompt) {
+        System.out.print(prompt);
+        while(true) {
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch(NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a number : ");
+            }
+        }
     }
 }

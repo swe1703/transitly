@@ -15,11 +15,11 @@ public class SignInView {
         this.scanner = ConsoleInput.getScanner();
     }
 
-    public boolean init() {
-        return showLoginMenu();
+    public void init() {
+        showLoginMenu();
     }
 
-    public boolean showLoginMenu() {
+    public void showLoginMenu() {
         System.out.println("\nUser Sign In");
 
         while(true) {
@@ -28,20 +28,21 @@ public class SignInView {
 
             if(!signInModel.isEmailExists(email)) {
                 showMessage("Email address not found. Please sign up first.");
-                return false;
+                return;
             }
 
             System.out.print("Enter password : ");
             String password = scanner.nextLine();
 
-            boolean success = signInModel.login(email, password);
-            if(success) return true;
+            boolean isLoggedIn = signInModel.login(email, password);
+            if(isLoggedIn) return;
         }
     }
 
-    public void onSuccessfulLogin(String userName) {
+    public boolean onSuccessfulLogin(String userName) {
         showMessage("Welcome " + userName + "!");
         new UserDashboard().showUserDashboard();
+        return true;
     }
 
     public void showMessage(String message) {

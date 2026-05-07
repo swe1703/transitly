@@ -14,8 +14,19 @@ public class UserDashboard {
             System.out.println("1. Search available buses by stop name");
             System.out.println("2. Logout");
 
-            System.out.print("Enter your choice : ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            System.out.print("Select an option : ");
+            int choice;
+
+            while(true) {
+                try {
+                    choice = Integer.parseInt(scanner.nextLine());
+                    break;
+                }
+
+                catch (NumberFormatException e) {
+                    System.out.print("Invalid input. Please enter a number : ");
+                }
+            }
 
             switch(choice) {
                 case 1 :

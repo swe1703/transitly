@@ -11,43 +11,43 @@ public class SignUpView {
     private final Scanner scanner;
 
     public SignUpView() {
-        this.signUpModel = new SignUpModel(this);
-        this.scanner = ConsoleInput.getScanner();
+        signUpModel = new SignUpModel(this);
+        scanner = ConsoleInput.getScanner();
     }
 
-    public boolean init() {
-        return showSignUpMenu();
+    public void init() {
+        showSignUpMenu();
     }
 
-    public boolean showSignUpMenu() {
+    public void showSignUpMenu() {
         System.out.println("\nUser Sign Up");
 
         String name = readName();
         String email = readEmail();
         String password = readPassword();
 
-        return signUpModel.registerUser(name, email, password);
+        signUpModel.registerUser(name, email, password);
     }
 
     private String readName() {
         while(true) {
             System.out.print("Enter your name : ");
-            String userName = scanner.nextLine();
+            String userName = scanner.nextLine().trim();
 
-            String errorInName = signUpModel.validateName(userName);
-            if(errorInName == null) return userName.trim();
-            showMessage(errorInName);
+            String nameError = signUpModel.validateName(userName);
+            if(nameError == null) return userName;
+            showMessage(nameError);
         }
     }
 
     private String readEmail() {
         while(true) {
             System.out.print("Enter email address : ");
-            String email = scanner.nextLine();
+            String email = scanner.nextLine().trim();
 
-            String errorInEmail = SignUpModel.validateEmail(email);
-            if(errorInEmail == null) return email.trim();
-            showMessage(errorInEmail);
+            String emailError = SignUpModel.validateEmail(email);
+            if(emailError == null) return email;
+            showMessage(emailError);
         }
     }
 
@@ -56,9 +56,9 @@ public class SignUpView {
             System.out.print("Enter password (Minimum 6 characters with at least a letter and a number) : ");
             String password = scanner.nextLine();
 
-            String errorInPassword = SignUpModel.validatePassword(password);
-            if(errorInPassword != null) {
-                showMessage(errorInPassword);
+            String passwordError = SignUpModel.validatePassword(password);
+            if(passwordError != null) {
+                showMessage(passwordError);
                 continue;
             }
 
@@ -79,6 +79,8 @@ public class SignUpView {
         System.out.println("Account has been created successfully.");
         System.out.println("Your username : " + user.getName());
         System.out.println("Please sign in to continue.");
+
+        new SignInView().init();
     }
 
     public void showMessage(String message) {

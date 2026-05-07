@@ -6,12 +6,12 @@ import com.swetha.transitly.util.ConsoleInput;
 import java.util.Scanner;
 
 public class AdminSignInView {
-    private AdminSignInModel adminSignInModel;
+    private final AdminSignInModel adminSignInModel;
     private final Scanner scanner;
 
     public AdminSignInView() {
-        this.adminSignInModel = new AdminSignInModel(this);
-        this.scanner = ConsoleInput.getScanner();
+        adminSignInModel = new AdminSignInModel(this);
+        scanner = ConsoleInput.getScanner();
     }
 
     public void init() {
@@ -36,11 +36,11 @@ public class AdminSignInView {
     private String readEmail() {
         while(true) {
             System.out.print("Enter email address : ");
-            String email = scanner.nextLine();
+            String email = scanner.nextLine().trim();
 
-            String errorInEmail = adminSignInModel.validateEmail(email);
-            if(errorInEmail == null) return email.trim();
-            showMessage(errorInEmail);
+            String emailError = adminSignInModel.validateEmail(email);
+            if(emailError == null) return email;
+            showMessage(emailError);
         }
     }
 
@@ -49,9 +49,9 @@ public class AdminSignInView {
             System.out.print("Enter password : ");
             String password = scanner.nextLine();
 
-            String errorInPassword = adminSignInModel.validatePassword(password);
-            if(errorInPassword == null) return password;
-            showMessage(errorInPassword);
+            String passwordError = adminSignInModel.validatePassword(password);
+            if(passwordError == null) return password;
+            showMessage(passwordError);
         }
     }
 

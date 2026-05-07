@@ -15,11 +15,11 @@ public class TransitlyDB {
         return transitlyDB;
     }
 
-    public static ArrayList<User> users = new ArrayList<>();
-    public static ArrayList<Bus> buses = new ArrayList<>();
-    public static ArrayList<Route> routes = new ArrayList<>();
-    public static ArrayList<BusRoute> busAndRoutes = new ArrayList<>();
-    public static ArrayList<StopTiming> stopTimings = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<Bus> buses = new ArrayList<>();
+    private ArrayList<Route> routes = new ArrayList<>();
+    private ArrayList<BusRoute> busAndRoutes = new ArrayList<>();
+    private ArrayList<StopTiming> stopTimings = new ArrayList<>();
 
     private final String adminEmail = "transitly@gmail.com";
     private final String adminPassword = "transitly@1703";

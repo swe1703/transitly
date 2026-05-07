@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RouteManageView {
-    private RouteManageModel routeManageModel;
+    private final RouteManageModel routeManageModel;
     private final Scanner scanner;
 
     public RouteManageView() {
@@ -26,9 +26,7 @@ public class RouteManageView {
             System.out.println("2. View routes");
             System.out.println("3. Back");
 
-            System.out.print("Enter your choice : ");
-            int choice = Integer.parseInt(scanner.nextLine());
-
+            int choice = getChoice("Select an option : ");
             switch(choice) {
                 case 1:
                     addRoute();
@@ -54,47 +52,73 @@ public class RouteManageView {
     public void addRoute() {
         int routeId;
         while(true) {
-            System.out.print("Enter route id : ");
-            routeId = Integer.parseInt(scanner.nextLine());
-
-            if(routeManageModel.doesRouteExist(routeId)) showMessage("Route id already exists.");
+            routeId = getChoice("Enter route id : ");
+            if(routeId <= 0) showMessage("Route id must be greater than 0.");
+            else if(routeManageModel.doesRouteExist(routeId)) showMessage("Route id already exists.");
             else break;
         }
 
-        System.out.print("Enter number of stops : ");
-        int stopsCount = scanner.nextInt();
-        scanner.nextLine();
+        int stopsCount;
+        while(true) {
+            stopsCount = getChoice("Enter number of stops : ");
+            if(stopsCount <= 0) showMessage("Stops count must be greater than 0.");
+            else break;
+        }
 
         ArrayList<String> stops = new ArrayList<>();
-
         for(int i = 1; i <= stopsCount; i++) {
-            System.out.print("Enter Stop " + i + " : ");
-            stops.add(scanner.nextLine());
+            while(true) {
+                System.out.print("Enter Stop " + i + " : ");
+                String stopName = scanner.nextLine().trim();
+
+                if(stopName.isEmpty()) showMessage("Stop name cannot be empty.");
+                else {
+                    stops.add(stopName);
+                    break;
+                }
+            }
         }
 
         String source = stops.get(0);
-        String destination = stops.get(stopsCount-1);
+        String destination = stops.get(stops.size()-1);
 
         routeManageModel.addRoute(routeId, source, destination, stops);
     }
 
     public void onRouteAdded(String message) {
-        showMessage("Route added successfully.");
+        showMessage(message);
     }
 
     public void showRouteTable(ArrayList<Route> routes) {
-        System.out.println("-------------------------------------------------------");
-        System.out.printf("%-10s %-15s %-15s %-40s%n", "Route id", "Source", "Destination", "Stops");
-        System.out.println("-------------------------------------------------------");
-
-        for(Route route : routes) {
-            System.out.printf("%-10d %-15s %-15s %-40s%n", route.getRouteId(), route.getSource(), route.getDestination(), String.join(" -> ", route.getStops()));
+        if(routes == null || routes.isEmpty()) {
+            showMessage("No routes available.");
+            return;
         }
 
-        System.out.println("-------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.printf("%-10s %-15s %-15s %-50s%n", "Route id", "Source", "Destination", "Stops");
+        System.out.println("----------------------------------------------------------------------------------------------------");
+
+        for(Route route : routes) {
+            String stops = String.join(" -> ", route.getStops());
+            System.out.printf("%-10d %-15s %-15s %-50s%n", route.getRouteId(), route.getSource(), route.getDestination(), stops);
+        }
+
+        System.out.println("----------------------------------------------------------------------------------------------------");
     }
 
     public void showMessage(String message) {
         System.out.println(message);
+    }
+
+    private int getChoice(String prompt) {
+        System.out.print(prompt);
+        while(true) {
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch(NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a number : ");
+            }
+        }
     }
 }

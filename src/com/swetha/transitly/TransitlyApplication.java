@@ -3,13 +3,14 @@ package com.swetha.transitly;
 import com.swetha.transitly.features.authentication.adminsignin.AdminSignInView;
 import com.swetha.transitly.features.authentication.signin.SignInView;
 import com.swetha.transitly.features.authentication.signup.SignUpView;
+import com.swetha.transitly.util.ConsoleInput;
 
 import java.util.Scanner;
 
 public class TransitlyApplication {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = ConsoleInput.getScanner();
 
+    public static void main(String[] args) {
         while(true) {
 
             System.out.println("\nTRANSITLY");
@@ -17,36 +18,38 @@ public class TransitlyApplication {
             System.out.println("2. User");
             System.out.println("3. Exit");
 
-            System.out.print("Select an option : ");
-            int choice = scanner.nextInt();
-
+            int choice = getChoice("Select an option : ");
             switch(choice) {
                 case 1 :
                     new AdminSignInView().init();
                     break;
 
                 case 2 :
-                    while(true) {
+                    boolean isUserMenuRunning = true;
+                    while(isUserMenuRunning) {
                         System.out.println("\nUser options : ");
                         System.out.println("1. Sign Up");
                         System.out.println("2. Sign In");
+                        System.out.println("3. Back");
 
-                        System.out.print("Enter your choice : ");
-                        int userChoice = scanner.nextInt();
+                        int userChoice = getChoice("Enter your choice : ");
+                        switch(userChoice) {
+                            case 1 :
+                                new SignUpView().init();
+                                break;
 
-                        if(userChoice == 1) {
-                            boolean success = new SignUpView().init();
-                            if(success) new SignInView().init();
+                            case 2 :
+                                new SignInView().init();
+                                break;
+
+                            case 3 :
+                                isUserMenuRunning = false;
+                                break;
+
+                            default :
+                                System.out.println("Invalid choice.");
                         }
-
-                        else if(userChoice == 2) {
-                            boolean success = new SignInView().init();
-                            if(success) break;
-                        }
-
-                        else System.out.println("Invalid choice.");
                     }
-
                     break;
 
                 case 3 :
@@ -55,6 +58,17 @@ public class TransitlyApplication {
 
                 default :
                     System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static int getChoice(String prompt) {
+        System.out.print(prompt);
+        while(true) {
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch(NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a number : ");
             }
         }
     }

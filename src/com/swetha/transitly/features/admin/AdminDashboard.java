@@ -1,6 +1,5 @@
 package com.swetha.transitly.features.admin;
 
-import com.swetha.transitly.data.dto.BusRoute;
 import com.swetha.transitly.features.admin.busmanage.BusManageView;
 import com.swetha.transitly.features.admin.busroutemanage.BusRouteManageView;
 import com.swetha.transitly.features.admin.routemanage.RouteManageView;
@@ -20,12 +19,23 @@ public class AdminDashboard {
             System.out.println("4. Manage stop timings");
             System.out.println("5. Logout");
 
-            System.out.print("Enter your choice : ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            System.out.print("Select an option : ");
+            int choice;
+
+            while(true) {
+                try {
+                    choice = Integer.parseInt(scanner.nextLine().trim());
+                    break;
+                }
+
+                catch (NumberFormatException e) {
+                    System.out.print("Invalid input. Please enter a number : ");
+                }
+            }
 
             switch(choice) {
                 case 1 :
-                    new RouteManageView().showRouteMenu();
+                    new RouteManageView().init();
                     break;
 
                 case 2 :

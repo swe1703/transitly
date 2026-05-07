@@ -27,9 +27,8 @@ public class BusRouteManageView {
             System.out.println("1. Map bus to route");
             System.out.println("2. View mappings");
             System.out.println("3. Back");
-
-            System.out.print("Enter your choice : ");
-            int choice = Integer.parseInt(scanner.nextLine());
+            
+            int choice = getChoice("Select an option : ");
 
             switch(choice) {
                 case 1 :
@@ -51,27 +50,20 @@ public class BusRouteManageView {
 
     private void mapBusToRoute() {
         int busRouteId;
-
         while(true) {
-            System.out.print("Enter bus-route id : ");
-            busRouteId = Integer.parseInt(scanner.nextLine());
-
+            busRouteId = getChoice("Enter bus-route id : ");
             if(busRouteManageModel.doesBusRouteIdExist(busRouteId)) showMessage("Id already exists.");
             else break;
         }
 
-        System.out.print("Enter bus id : ");
-        int busId = Integer.parseInt(scanner.nextLine());
-
+        int busId = getChoice("Enter bus id : ");
         Bus bus = busRouteManageModel.getBusById(busId);
         if(bus == null) {
             showMessage("Bus not found.");
             return;
         }
 
-        System.out.print("Enter route id : ");
-        int routeId = Integer.parseInt(scanner.nextLine());
-
+        int routeId = getChoice("Enter route id : ");
         Route route = busRouteManageModel.getRouteById(routeId);
         if(route == null) {
             showMessage("Route not found.");
@@ -82,7 +74,6 @@ public class BusRouteManageView {
         while(true) {
             System.out.print("Enter shift (am / pm) : ");
             shift = scanner.nextLine().trim().toLowerCase();
-
             if(shift.equals("am") || shift.equals("pm")) break;
             showMessage("Invalid shift. Enter only am or pm.");
         }
@@ -94,6 +85,17 @@ public class BusRouteManageView {
         System.out.println(message);
     }
 
+    private int getChoice(String prompt) {
+        System.out.print(prompt);
+        while(true) {
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch(NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a number : ");
+            }
+        }
+    }
+
     private void viewMappings() {
         ArrayList<BusRoute> allMappings = busRouteManageModel.getAllBusRoutes();
 
@@ -103,11 +105,11 @@ public class BusRouteManageView {
         }
 
         System.out.println("--------------------------------------------------------------------------------");
-        System.out.printf("%-12s %-10s %-10s %-10s%n", "Bus-route id", "Bus id", "Route id", "Shift");
+        System.out.printf("%-15s %-10s %-12s %-10s%n", "Bus-route id", "Bus id", "Route id", "Shift");
         System.out.println("--------------------------------------------------------------------------------");
 
         for(BusRoute map : allMappings) {
-            System.out.printf("%-12d %-10d %-10d %-10s%n", map.getBusRouteId(), map.getBusId(), map.getRouteId(), map.getShift());
+            System.out.printf("%-15d %-10d %-12d %-10s%n", map.getBusRouteId(), map.getBusId(), map.getRouteId(), map.getShift());
         }
 
         System.out.println("--------------------------------------------------------------------------------");

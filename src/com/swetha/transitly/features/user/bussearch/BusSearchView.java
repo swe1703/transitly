@@ -19,27 +19,43 @@ public class BusSearchView {
     }
 
     public void getBusesByStopName() {
-        System.out.print("Enter stop name : ");
-        String stopName = scanner.nextLine();
+        String stopName;
+        while(true) {
+            System.out.print("Enter stop name : ");
+            stopName = scanner.nextLine().trim();
+            if(stopName.isEmpty()) showMessage("Stop name cannot be empty.");
+            else break;
+        }
 
-        System.out.print("Enter shift (am / pm) : ");
-        String shift = scanner.nextLine();
+
+        String shift;
+        while(true) {
+            System.out.print("Enter shift (am / pm) : ");
+            shift = scanner.nextLine().trim().toLowerCase();
+            if(shift.equals("am") || shift.equals("pm")) break;
+            showMessage("Invalid shift. Please enter 'am' or 'pm'.");
+        }
 
         ArrayList<String[]> availableBuses = busSearchModel.getBusesByStopName(stopName, shift);
-        if(availableBuses.isEmpty()) {
+        if(availableBuses == null || availableBuses.isEmpty()) {
             showMessage("No buses available for your stop.");
         }
 
-        System.out.println("\n---------------------------------------------------------");
-        System.out.printf(" %-4s %-16s %-14s %s%n", "S.no", "Bus no", "Bus name", "Arrival time");
-        System.out.println("---------------------------------------------------------");
+        else {
+            System.out.println("\n---------------------------------------------------------");
+            System.out.printf(" %-4s %-16s %-14s %s%n", "S.no", "Bus no", "Bus name", "Arrival time");
+            System.out.println("---------------------------------------------------------");
 
-        int serialNo = 1;
-        for(String[] busDetails : availableBuses) {
-            System.out.printf(" %-4d %-16s %-14s %s%n", serialNo++, busDetails[0], busDetails[1], busDetails[2]);
+            int serialNo = 1;
+            for(String[] busDetails : availableBuses) {
+                System.out.printf(" %-4d %-16s %-14s %s%n", serialNo++, busDetails[0], busDetails[1], busDetails[2]);
+            }
+
+            System.out.println("---------------------------------------------------------");
         }
 
-        System.out.println("---------------------------------------------------------");
+        System.out.print("\nPress 'Enter' to continue.");
+        scanner.nextLine();
     }
 
     private void showMessage(String message) {

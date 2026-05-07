@@ -18,8 +18,7 @@ public class SignInModel {
             return false;
         }
 
-        signInView.onSuccessfulLogin(user.getName());
-        return true;
+        return signInView.onSuccessfulLogin(user.getName());
     }
 
     public boolean isEmailExists(String email) {
