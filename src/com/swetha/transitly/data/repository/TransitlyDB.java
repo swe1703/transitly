@@ -142,14 +142,26 @@ public class TransitlyDB {
     }
 
     public boolean removeBusRoute(int busRouteId) {
+        boolean isRemoved = false;
+
         for(BusRoute busRoute : busAndRoutes) {
             if(busRoute.getBusRouteId() == busRouteId) {
                 busAndRoutes.remove(busRoute);
-                return true;
+                isRemoved = true;
+                break;
             }
         }
 
-        return false;
+        if(isRemoved) {
+            for(StopTiming stopTiming : stopTimings) {
+                if(stopTiming.getBusRouteId() == busRouteId) {
+                    stopTimings.remove(stopTiming);
+                    break;
+                }
+            }
+        }
+
+        return isRemoved;
     }
 
     public boolean updateStopTiming(int busRouteId, String stopName, String newTime) {
