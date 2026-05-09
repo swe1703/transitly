@@ -4,11 +4,11 @@ import com.swetha.transitly.features.admin.busmanage.BusManageView;
 import com.swetha.transitly.features.admin.busroutemanage.BusRouteManageView;
 import com.swetha.transitly.features.admin.routemanage.RouteManageView;
 import com.swetha.transitly.features.admin.stoptimingmanage.StopTimingManageView;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 import java.util.Scanner;
 
 public class AdminDashboard {
-    private final Scanner scanner = ConsoleInput.getScanner();
+    private final Scanner scanner = InputUtil.getScanner();
 
     public void showAdminDashboard() {
         while(true) {

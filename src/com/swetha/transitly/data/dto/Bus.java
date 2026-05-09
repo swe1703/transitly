@@ -1,9 +1,9 @@
 package com.swetha.transitly.data.dto;
 
 public class Bus {
-    private int busId;
-    private String busNumber;
-    private String busName;
+    private final int busId;
+    private final String busNumber;
+    private final String busName;
 
     public Bus(int busId, String busNumber, String busName) {
         this.busId = busId;
@@ -15,23 +15,11 @@ public class Bus {
         return busId;
     }
 
-    public void setBusId(int busId) {
-        this.busId = busId;
-    }
-
     public String getBusNumber() {
         return busNumber;
     }
 
-    public void setBusNumber(String busNumber) {
-        this.busNumber = busNumber;
-    }
-
     public String getBusName() {
         return busName;
-    }
-
-    public void setBusName(String busName) {
-        this.busName = busName;
     }
 }

@@ -3,7 +3,7 @@ package com.swetha.transitly.features.admin.busroutemanage;
 import com.swetha.transitly.data.dto.Bus;
 import com.swetha.transitly.data.dto.BusRoute;
 import com.swetha.transitly.data.dto.Route;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,14 +14,14 @@ public class BusRouteManageView {
 
     public BusRouteManageView() {
         busRouteManageModel = new BusRouteManageModel(this);
-        scanner = ConsoleInput.getScanner();
+        scanner = InputUtil.getScanner();
     }
 
     public void init() {
         showBusToRouteMappingMenu();
     }
 
-    private void showBusToRouteMappingMenu() {
+    void showBusToRouteMappingMenu() {
         while(true) {
             System.out.println("\nBus Route Mapping");
             System.out.println("1. Map bus to route");
@@ -29,7 +29,7 @@ public class BusRouteManageView {
             System.out.println("3. Remove mapping (bus-route)");
             System.out.println("4. Back");
             
-            int choice = getChoice("Select an option : ");
+            int choice = InputUtil.getChoice("Select an option : ");
 
             switch(choice) {
                 case 1 :
@@ -53,10 +53,10 @@ public class BusRouteManageView {
         }
     }
 
-    private void removeBusRoute() {
+    void removeBusRoute() {
         int busRouteId;
         while(true) {
-            busRouteId = getChoice("Enter bus-route id to remove (0 to go back) : ");
+            busRouteId = InputUtil.getChoice("Enter bus-route id to remove (0 to go back) : ");
             if(busRouteId == 0) return;
             if(!busRouteManageModel.doesBusRouteIdExist(busRouteId)) showMessage("Bus-route id does not exist.");
             else break;
@@ -65,22 +65,22 @@ public class BusRouteManageView {
         busRouteManageModel.removeBusRoute(busRouteId);
     }
 
-    private void mapBusToRoute() {
+    void mapBusToRoute() {
         int busRouteId;
         while(true) {
-            busRouteId = getChoice("Enter bus-route id : ");
+            busRouteId = InputUtil.getChoice("Enter bus-route id : ");
             if(busRouteManageModel.doesBusRouteIdExist(busRouteId)) showMessage("Id already exists.");
             else break;
         }
 
-        int busId = getChoice("Enter bus id : ");
+        int busId = InputUtil.getChoice("Enter bus id : ");
         Bus bus = busRouteManageModel.getBusById(busId);
         if(bus == null) {
             showMessage("Bus not found.");
             return;
         }
 
-        int routeId = getChoice("Enter route id : ");
+        int routeId = InputUtil.getChoice("Enter route id : ");
         Route route = busRouteManageModel.getRouteById(routeId);
         if(route == null) {
             showMessage("Route not found.");
@@ -102,18 +102,7 @@ public class BusRouteManageView {
         System.out.println(message);
     }
 
-    private int getChoice(String prompt) {
-        System.out.print(prompt);
-        while(true) {
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch(NumberFormatException e) {
-                System.out.print("Invalid input. Please enter a number : ");
-            }
-        }
-    }
-
-    private void viewMappings() {
+    void viewMappings() {
         ArrayList<BusRoute> allMappings = busRouteManageModel.getAllBusRoutes();
 
         if(allMappings.isEmpty()) {

@@ -1,7 +1,7 @@
 package com.swetha.transitly.features.admin.busmanage;
 
 import com.swetha.transitly.data.dto.Bus;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,14 +12,14 @@ public class BusManageView {
 
     public BusManageView() {
         busManageModel = new BusManageModel(this);
-        this.scanner = ConsoleInput.getScanner();
+        this.scanner = InputUtil.getScanner();
     }
 
     public void init() {
         showBusMenu();
     }
 
-    public void showBusMenu() {
+    void showBusMenu() {
         while(true) {
             System.out.println("\nBus Management");
             System.out.println("1. Add bus");
@@ -27,7 +27,7 @@ public class BusManageView {
             System.out.println("3. Remove bus");
             System.out.println("4. Back");
 
-            int choice = getChoice("Select an option : ");
+            int choice = InputUtil.getChoice("Select an option : ");
             switch(choice) {
                 case 1 :
                     addBus();
@@ -50,10 +50,10 @@ public class BusManageView {
         }
     }
 
-    private void removeBus() {
+    void removeBus() {
         int busId;
         while(true) {
-            busId = getChoice("Enter bus id to remove (0 to go back) : ");
+            busId = InputUtil.getChoice("Enter bus id to remove (0 to go back) : ");
 
             if(busId == 0) return;
             if(busId < 0) showMessage("Bus id must be greater than 0.");
@@ -64,10 +64,10 @@ public class BusManageView {
         busManageModel.removeBus(busId);
     }
 
-    public void addBus() {
+    void addBus() {
         int busId;
         while(true) {
-            busId = getChoice("Enter bus id : ");
+            busId = InputUtil.getChoice("Enter bus id : ");
             if(busId <= 0) showMessage("Bus id must be greater than 0.");
             else if(busManageModel.doesBusIdExist(busId)) showMessage("Bus id already exists.");
             else break;
@@ -92,19 +92,19 @@ public class BusManageView {
         busManageModel.addBus(busId, busNumber, busName);
     }
 
-    public void showBusList() {
+    void showBusList() {
         busManageModel.getAllBuses();
     }
 
-    public void onBusAdded(String message) {
+    void onBusAdded(String message) {
         showMessage(message);
     }
 
-    public void showMessage(String message) {
+    void showMessage(String message) {
         System.out.println(message);
     }
 
-    public void showBusTable(ArrayList<Bus> buses) {
+    void showBusTable(ArrayList<Bus> buses) {
         if(buses == null || buses.isEmpty()) {
             showMessage("No buses available.");
             return;
@@ -119,16 +119,5 @@ public class BusManageView {
         }
 
         System.out.println("--------------------------------------------------------------------------------");
-    }
-
-    private int getChoice(String prompt) {
-        System.out.print(prompt);
-        while(true) {
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch(NumberFormatException e) {
-                System.out.print("Invalid input. Please enter a number : ");
-            }
-        }
     }
 }

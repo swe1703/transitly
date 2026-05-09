@@ -5,18 +5,18 @@ import com.swetha.transitly.data.repository.TransitlyDB;
 
 import java.util.ArrayList;
 
-public class RouteManageModel {
+class RouteManageModel {
     private final RouteManageView routeManageView;
 
     RouteManageModel(RouteManageView routeManageView) {
         this.routeManageView = routeManageView;
     }
 
-    public boolean doesRouteExist(int routeId) {
+    boolean doesRouteExist(int routeId) {
         return TransitlyDB.getInstance().getRouteById(routeId) != null;
     }
 
-    public void addRoute(int routeId, String source, String destination, ArrayList<String> stops) {
+    void addRoute(int routeId, String source, String destination, ArrayList<String> stops) {
         Route route = new Route();
 
         route.setRouteId(routeId);
@@ -28,7 +28,7 @@ public class RouteManageModel {
         routeManageView.onRouteAdded("Route has been added.");
     }
 
-    public void getAllRoutes() {
+    void getAllRoutes() {
         ArrayList<Route> routes = TransitlyDB.getInstance().getAllRoutes();
 
         if(routes.isEmpty()) {
@@ -39,7 +39,7 @@ public class RouteManageModel {
         routeManageView.showRouteTable(routes);
     }
 
-    public void removeRoute(int routeId) {
+    void removeRoute(int routeId) {
         boolean isRemoved = TransitlyDB.getInstance().removeRoute(routeId);
         if(isRemoved) routeManageView.showMessage("Route has been removed.");
         else routeManageView.showMessage("Unable to remove route.");

@@ -5,21 +5,21 @@ import com.swetha.transitly.data.repository.TransitlyDB;
 
 import java.util.ArrayList;
 
-public class BusManageModel {
+class BusManageModel {
     private final BusManageView busManageView;
 
     BusManageModel(BusManageView busManageView) {
         this.busManageView = busManageView;
     }
 
-    public void addBus(int busId, String busNumber, String busName) {
+    void addBus(int busId, String busNumber, String busName) {
         Bus bus = new Bus(busId, busNumber, busName);
         TransitlyDB.getInstance().addBus(bus);
 
         busManageView.onBusAdded("Bus has been added.");
     }
 
-    public void getAllBuses() {
+    void getAllBuses() {
         ArrayList<Bus> buses = TransitlyDB.getInstance().getAllBuses();
 
         if(buses.isEmpty()) {
@@ -30,7 +30,7 @@ public class BusManageModel {
         busManageView.showBusTable(buses);
     }
 
-    public boolean doesBusIdExist(int busId) {
+    boolean doesBusIdExist(int busId) {
         ArrayList<Bus> buses = TransitlyDB.getInstance().getAllBuses();
 
         for(Bus bus : buses) {
@@ -40,7 +40,7 @@ public class BusManageModel {
         return false;
     }
 
-    public void removeBus(int busId) {
+    void removeBus(int busId) {
         boolean isDeleted = TransitlyDB.getInstance().removeBus(busId);
 
         if(isDeleted) busManageView.showMessage("Bus has been removed.");

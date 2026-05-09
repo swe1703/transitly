@@ -1,6 +1,6 @@
 package com.swetha.transitly.features.user.bussearch;
 
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -11,14 +11,14 @@ public class BusSearchView {
 
     public BusSearchView() {
         busSearchModel = new BusSearchModel(this);
-        scanner = ConsoleInput.getScanner();
+        scanner = InputUtil.getScanner();
     }
 
     public void init() {
         getBusesBySourceAndDestination();
     }
 
-    public void getBusesBySourceAndDestination() {
+    void getBusesBySourceAndDestination() {
         String source;
         while(true) {
             System.out.print("Starting from : ");
@@ -66,7 +66,7 @@ public class BusSearchView {
         scanner.nextLine();
     }
 
-    private void showMessage(String message) {
+    void showMessage(String message) {
         System.out.println(message);
     }
 }

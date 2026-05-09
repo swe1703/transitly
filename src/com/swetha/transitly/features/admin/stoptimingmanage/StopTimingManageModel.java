@@ -8,30 +8,30 @@ import com.swetha.transitly.data.repository.TransitlyDB;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class StopTimingManageModel {
+class StopTimingManageModel {
     private final StopTimingManageView scheduleManageView;
 
     StopTimingManageModel(StopTimingManageView scheduleManageView) {
         this.scheduleManageView = scheduleManageView;
     }
 
-    public Route getRouteByBusRouteId(int busRouteId) {
+    Route getRouteByBusRouteId(int busRouteId) {
         BusRoute busRouteAvailability = TransitlyDB.getInstance().getBusRouteById(busRouteId);
 
         if(busRouteAvailability == null) return null;
         return TransitlyDB.getInstance().getRouteById(busRouteAvailability.getRouteId());
     }
 
-    public void addStopTiming(int busRouteId, LinkedHashMap<String, String> stopTimings) {
+    void addStopTiming(int busRouteId, LinkedHashMap<String, String> stopTimings) {
         StopTiming stopTiming = new StopTiming(busRouteId, stopTimings);
         TransitlyDB.getInstance().setStopTiming(stopTiming);
     }
 
-    public ArrayList<StopTiming> getStopTimingsByBusRouteId(int busRouteId) {
+    ArrayList<StopTiming> getStopTimingsByBusRouteId(int busRouteId) {
         return TransitlyDB.getInstance().getTimingsByBusRouteId(busRouteId);
     }
 
-    public boolean updateStopTiming(int busRouteId, String stopName, String newTime) {
+    boolean updateStopTiming(int busRouteId, String stopName, String newTime) {
         return TransitlyDB.getInstance().updateStopTiming(busRouteId, stopName, newTime);
     }
 }

@@ -1,7 +1,7 @@
 package com.swetha.transitly.features.admin.routemanage;
 
 import com.swetha.transitly.data.dto.Route;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,14 +12,14 @@ public class RouteManageView {
 
     public RouteManageView() {
         routeManageModel = new RouteManageModel(this);
-        scanner = ConsoleInput.getScanner();
+        scanner = InputUtil.getScanner();
     }
 
     public void init() {
         showRouteMenu();
     }
 
-    public void showRouteMenu() {
+    void showRouteMenu() {
         while(true) {
             System.out.println("\nRoute management");
             System.out.println("1. Add route");
@@ -27,7 +27,7 @@ public class RouteManageView {
             System.out.println("3. Remove route");
             System.out.println("4. Back");
 
-            int choice = getChoice("Select an option : ");
+            int choice = InputUtil.getChoice("Select an option : ");
             switch(choice) {
                 case 1 :
                     addRoute();
@@ -50,11 +50,11 @@ public class RouteManageView {
         }
     }
 
-    private void removeRoute() {
+    void removeRoute() {
         int routeId;
 
         while(true) {
-            routeId = getChoice("Enter route id to remove (0 to go back) : ");
+            routeId = InputUtil.getChoice("Enter route id to remove (0 to go back) : ");
 
             if(routeId == 0) return;
             if(routeId < 0) showMessage("Route id must be greater than 0.");
@@ -65,14 +65,14 @@ public class RouteManageView {
         routeManageModel.removeRoute(routeId);
     }
 
-    public void showRouteList() {
+    void showRouteList() {
         routeManageModel.getAllRoutes();
     }
 
-    public void addRoute() {
+    void addRoute() {
         int routeId;
         while(true) {
-            routeId = getChoice("Enter route id : ");
+            routeId = InputUtil.getChoice("Enter route id : ");
             if(routeId <= 0) showMessage("Route id must be greater than 0.");
             else if(routeManageModel.doesRouteExist(routeId)) showMessage("Route id already exists.");
             else break;
@@ -80,7 +80,7 @@ public class RouteManageView {
 
         int stopsCount;
         while(true) {
-            stopsCount = getChoice("Enter number of stops : ");
+            stopsCount = InputUtil.getChoice("Enter number of stops : ");
             if(stopsCount <= 0) showMessage("Stops count must be greater than 0.");
             else break;
         }
@@ -105,11 +105,11 @@ public class RouteManageView {
         routeManageModel.addRoute(routeId, source, destination, stops);
     }
 
-    public void onRouteAdded(String message) {
+    void onRouteAdded(String message) {
         showMessage(message);
     }
 
-    public void showRouteTable(ArrayList<Route> routes) {
+    void showRouteTable(ArrayList<Route> routes) {
         if(routes == null || routes.isEmpty()) {
             showMessage("No routes available.");
             return;
@@ -127,18 +127,7 @@ public class RouteManageView {
         System.out.println("----------------------------------------------------------------------------------------------------");
     }
 
-    public void showMessage(String message) {
+    void showMessage(String message) {
         System.out.println(message);
-    }
-
-    private int getChoice(String prompt) {
-        System.out.print(prompt);
-        while(true) {
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch(NumberFormatException e) {
-                System.out.print("Invalid input. Please enter a number : ");
-            }
-        }
     }
 }

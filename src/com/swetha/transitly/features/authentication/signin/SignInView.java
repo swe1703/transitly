@@ -1,8 +1,7 @@
 package com.swetha.transitly.features.authentication.signin;
 
-import com.swetha.transitly.features.authentication.signup.SignUpView;
 import com.swetha.transitly.features.user.UserDashboard;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.Scanner;
 
@@ -12,14 +11,14 @@ public class SignInView {
 
     public SignInView() {
         signInModel = new SignInModel(this);
-        this.scanner = ConsoleInput.getScanner();
+        this.scanner = InputUtil.getScanner();
     }
 
     public void init() {
         showLoginMenu();
     }
 
-    public void showLoginMenu() {
+    void showLoginMenu() {
         System.out.println("\nUser Sign In");
 
         while(true) {
@@ -39,13 +38,13 @@ public class SignInView {
         }
     }
 
-    public boolean onSuccessfulLogin(String userName) {
+    boolean onSuccessfulLogin(String userName) {
         showMessage("Welcome " + userName + "!");
         new UserDashboard().showUserDashboard();
         return true;
     }
 
-    public void showMessage(String message) {
+    void showMessage(String message) {
         System.out.println();
         System.out.println(message);
     }

@@ -1,7 +1,7 @@
 package com.swetha.transitly.features.authentication.adminsignin;
 
 import com.swetha.transitly.features.admin.AdminDashboard;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.Scanner;
 
@@ -11,14 +11,14 @@ public class AdminSignInView {
 
     public AdminSignInView() {
         adminSignInModel = new AdminSignInModel(this);
-        scanner = ConsoleInput.getScanner();
+        scanner = InputUtil.getScanner();
     }
 
     public void init() {
         showAdminLoginMenu();
     }
 
-    public void showAdminLoginMenu() {
+     void showAdminLoginMenu() {
         System.out.println("\nAdmin Sign In");
 
         while(true) {
@@ -33,7 +33,7 @@ public class AdminSignInView {
         }
     }
 
-    private String readEmail() {
+     String readEmail() {
         while(true) {
             System.out.print("Enter email address : ");
             String email = scanner.nextLine().trim();
@@ -44,7 +44,7 @@ public class AdminSignInView {
         }
     }
 
-    private String readPassword() {
+     String readPassword() {
         while(true) {
             System.out.print("Enter password : ");
             String password = scanner.nextLine();
@@ -55,7 +55,7 @@ public class AdminSignInView {
         }
     }
 
-    public void showMessage(String message) {
+    void showMessage(String message) {
         System.out.println();
         System.out.println(message);
     }

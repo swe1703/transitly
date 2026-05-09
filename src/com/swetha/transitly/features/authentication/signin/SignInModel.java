@@ -3,14 +3,14 @@ package com.swetha.transitly.features.authentication.signin;
 import com.swetha.transitly.data.dto.User;
 import com.swetha.transitly.data.repository.TransitlyDB;
 
-public class SignInModel {
+class SignInModel {
     private final SignInView signInView;
 
     SignInModel(SignInView signInView) {
         this.signInView = signInView;
     }
 
-    public boolean login(String email, String password) {
+    boolean login(String email, String password) {
         User user = TransitlyDB.getInstance().getUserByEmail(email);
 
         if(!user.getPassword().equals(password)) {
@@ -21,7 +21,7 @@ public class SignInModel {
         return signInView.onSuccessfulLogin(user.getName());
     }
 
-    public boolean isEmailExists(String email) {
+    boolean isEmailExists(String email) {
         return TransitlyDB.getInstance().getUserByEmail(email) != null;
     }
 }

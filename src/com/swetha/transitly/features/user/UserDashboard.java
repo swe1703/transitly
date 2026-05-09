@@ -1,12 +1,12 @@
 package com.swetha.transitly.features.user;
 
 import com.swetha.transitly.features.user.bussearch.BusSearchView;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.Scanner;
 
 public class UserDashboard {
-    private final Scanner scanner = ConsoleInput.getScanner();
+    private final Scanner scanner = InputUtil.getScanner();
 
     public void showUserDashboard() {
         while(true) {

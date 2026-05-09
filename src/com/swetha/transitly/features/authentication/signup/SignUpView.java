@@ -2,7 +2,7 @@ package com.swetha.transitly.features.authentication.signup;
 
 import com.swetha.transitly.data.dto.User;
 import com.swetha.transitly.features.authentication.signin.SignInView;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.util.Scanner;
 
@@ -12,14 +12,14 @@ public class SignUpView {
 
     public SignUpView() {
         signUpModel = new SignUpModel(this);
-        scanner = ConsoleInput.getScanner();
+        scanner = InputUtil.getScanner();
     }
 
     public void init() {
         showSignUpMenu();
     }
 
-    public void showSignUpMenu() {
+    void showSignUpMenu() {
         System.out.println("\nUser Sign Up");
 
         String name = readName();
@@ -29,7 +29,7 @@ public class SignUpView {
         signUpModel.registerUser(name, email, password);
     }
 
-    private String readName() {
+    String readName() {
         while(true) {
             System.out.print("Enter your name : ");
             String userName = scanner.nextLine().trim();
@@ -40,23 +40,23 @@ public class SignUpView {
         }
     }
 
-    private String readEmail() {
+    String readEmail() {
         while(true) {
             System.out.print("Enter email address : ");
             String email = scanner.nextLine().trim();
 
-            String emailError = SignUpModel.validateEmail(email);
+            String emailError = signUpModel.validateEmail(email);
             if(emailError == null) return email;
             showMessage(emailError);
         }
     }
 
-    private String readPassword() {
+    String readPassword() {
         while(true) {
             System.out.print("Enter password (Minimum 6 characters with at least a letter and a number) : ");
             String password = scanner.nextLine();
 
-            String passwordError = SignUpModel.validatePassword(password);
+            String passwordError = signUpModel.validatePassword(password);
             if(passwordError != null) {
                 showMessage(passwordError);
                 continue;
@@ -74,7 +74,7 @@ public class SignUpView {
         }
     }
 
-    public void onSuccessfulSignUp(User user) {
+    void onSuccessfulSignUp(User user) {
         System.out.println();
         System.out.println("Account has been created successfully.");
         System.out.println("Your username : " + user.getName());
@@ -83,7 +83,7 @@ public class SignUpView {
         new SignInView().init();
     }
 
-    public void showMessage(String message) {
+    void showMessage(String message) {
         System.out.println(message);
         System.out.println();
     }

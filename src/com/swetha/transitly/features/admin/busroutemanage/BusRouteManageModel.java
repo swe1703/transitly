@@ -7,7 +7,7 @@ import com.swetha.transitly.data.repository.TransitlyDB;
 
 import java.util.ArrayList;
 
-public class BusRouteManageModel {
+class BusRouteManageModel {
     private BusRouteManageView busRouteManageView;
 
     public BusRouteManageModel(BusRouteManageView busRouteManageView) {
@@ -15,7 +15,7 @@ public class BusRouteManageModel {
     }
 
 
-    public boolean doesBusRouteIdExist(int busRouteId) {
+    boolean doesBusRouteIdExist(int busRouteId) {
         for(BusRoute map : TransitlyDB.getInstance().getAllBusRoutes()) {
             if(map.getBusRouteId() == busRouteId) return true;
         }
@@ -23,26 +23,25 @@ public class BusRouteManageModel {
         return false;
     }
 
-    public Bus getBusById(int busId) {
+    Bus getBusById(int busId) {
         return TransitlyDB.getInstance().getBusById(busId);
     }
 
-    public Route getRouteById(int routeId) {
+    Route getRouteById(int routeId) {
         return TransitlyDB.getInstance().getRouteById(routeId);
     }
 
-    public void addBusRoute(int busRouteId, int busId, int routeId, String shift) {
+    void addBusRoute(int busRouteId, int busId, int routeId, String shift) {
         BusRoute busRoute = new BusRoute(busRouteId, busId, routeId, shift);
-
         TransitlyDB.getInstance().addBusRoute(busRoute);
         busRouteManageView.showMessage("Bus mapped to route successfully.");
     }
 
-    public ArrayList<BusRoute> getAllBusRoutes() {
+    ArrayList<BusRoute> getAllBusRoutes() {
         return TransitlyDB.getInstance().getAllBusRoutes();
     }
 
-    public void removeBusRoute(int busRouteId) {
+    void removeBusRoute(int busRouteId) {
         boolean isRemoved = TransitlyDB.getInstance().removeBusRoute(busRouteId);
         if(isRemoved) busRouteManageView.showMessage("Bus-route has been removed.");
     }

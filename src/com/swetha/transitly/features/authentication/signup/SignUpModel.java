@@ -6,7 +6,7 @@ import com.swetha.transitly.features.authentication.signin.SignInView;
 
 import java.util.regex.Pattern;
 
-public class SignUpModel {
+class SignUpModel {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)+$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d).{6,}$");
     private final SignUpView signUpView;
@@ -15,7 +15,7 @@ public class SignUpModel {
         this.signUpView = signUpView;
     }
 
-    public String validateName(String userName) {
+    String validateName(String userName) {
         if(userName == null || userName.trim().isEmpty()) {
             return "Name cannot be empty.";
         }
@@ -23,7 +23,7 @@ public class SignUpModel {
         return null;
     }
 
-    public static String validateEmail(String email) {
+    String validateEmail(String email) {
         if(email == null || email.trim().isEmpty()) {
             return "Email cannot be empty.";
         }
@@ -40,7 +40,7 @@ public class SignUpModel {
         return null;
     }
 
-    public static String validatePassword(String password) {
+    String validatePassword(String password) {
         if(password == null || password.isEmpty()) {
             return "Password cannot be empty.";
         }
@@ -52,7 +52,7 @@ public class SignUpModel {
         return null;
     }
 
-    public String validateConfirmPassword(String password, String confirmPassword) {
+    String validateConfirmPassword(String password, String confirmPassword) {
         if(confirmPassword == null || !confirmPassword.equals(password)) {
             return "Passwords do not match.";
         }
@@ -60,7 +60,7 @@ public class SignUpModel {
         return null;
     }
 
-    public boolean registerUser(String name, String email, String password) {
+    void registerUser(String name, String email, String password) {
         User user = new User();
 
         user.setName(name.trim());
@@ -70,10 +70,9 @@ public class SignUpModel {
         User userSaved = TransitlyDB.getInstance().addUser(user);
         if(userSaved == null) {
             signUpView.showMessage("Could not create account. Please try again.");
-            return false;
+            return;
         }
 
         signUpView.onSuccessfulSignUp(userSaved);
-        return true;
     }
 }

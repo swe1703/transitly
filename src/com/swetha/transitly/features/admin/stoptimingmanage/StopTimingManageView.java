@@ -2,7 +2,7 @@ package com.swetha.transitly.features.admin.stoptimingmanage;
 
 import com.swetha.transitly.data.dto.Route;
 import com.swetha.transitly.data.dto.StopTiming;
-import com.swetha.transitly.util.ConsoleInput;
+import com.swetha.transitly.util.InputUtil;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,14 +16,14 @@ public class StopTimingManageView {
 
     public StopTimingManageView() {
         stopTimingManageModel = new StopTimingManageModel(this);
-        this.scanner = ConsoleInput.getScanner();
+        this.scanner = InputUtil.getScanner();
     }
 
     public void init() {
         showStopTimingMenu();
     }
 
-    public void showStopTimingMenu() {
+     void showStopTimingMenu() {
         while(true) {
             System.out.println("\nStop Timing Management");
             System.out.println("1. Add stop timing");
@@ -31,7 +31,7 @@ public class StopTimingManageView {
             System.out.println("3. Update stop timing");
             System.out.println("4. Back");
 
-            int choice = getChoice("Select an option : ");
+            int choice = InputUtil.getChoice("Select an option : ");
             switch(choice) {
                 case 1:
                     addStopTiming();
@@ -54,8 +54,8 @@ public class StopTimingManageView {
         }
     }
 
-    private void updateStopTiming() {
-        int busRouteId = getChoice("Enter bus-route id : ");
+    void updateStopTiming() {
+        int busRouteId = InputUtil.getChoice("Enter bus-route id : ");
 
         ArrayList<StopTiming> timings = stopTimingManageModel.getStopTimingsByBusRouteId(busRouteId);
         if(timings == null || timings.isEmpty()) {
@@ -97,10 +97,10 @@ public class StopTimingManageView {
         if(isUpdated) showMessage("Timing has been updated.");
     }
 
-    public void addStopTiming() {
+    void addStopTiming() {
         int busRouteId;
         while(true) {
-            busRouteId = getChoice("Enter bus-route id : ");
+            busRouteId = InputUtil.getChoice("Enter bus-route id : ");
             if(busRouteId <= 0) showMessage("Bus-route id must be greater than 0.");
             else break;
         }
@@ -138,8 +138,8 @@ public class StopTimingManageView {
         showMessage("All timings have been added successfully.");
     }
 
-    private void viewStopTimingsByBusRouteId() {
-        int busRouteId = getChoice("Enter bus-route id : ");
+    void viewStopTimingsByBusRouteId() {
+        int busRouteId = InputUtil.getChoice("Enter bus-route id : ");
         ArrayList<StopTiming> timings = stopTimingManageModel.getStopTimingsByBusRouteId(busRouteId);
         if(timings == null || timings.isEmpty()) {
             showMessage("No timings found.");
@@ -161,19 +161,8 @@ public class StopTimingManageView {
         }
     }
 
-    public void showMessage(String message) {
+    void showMessage(String message) {
         System.out.println(message);
-    }
-
-    private int getChoice(String prompt) {
-        System.out.print(prompt);
-        while(true) {
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch(NumberFormatException e) {
-                System.out.print("Invalid input. Please enter a number : ");
-            }
-        }
     }
 }
 
